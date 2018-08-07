@@ -7,8 +7,9 @@
 --- @version June 2009
 ------------------------------------------------------------------------------
 
-import List(intersperse)
-import System
+import Data.List(intersperse)
+import System.Environment
+import System.Process
 import FlatCurry.Types
 import FlatCurry.Files
 import FlatCurry.Compact
@@ -31,4 +32,3 @@ compactProgAndReplace options prog = do
   let progfcy = flatCurryFileName prog
   system $ "mv "++prog++"_comp.fcy "++progfcy
   putStr $ "curry-compactflat: compacted program '"++progfcy++"' written.\n"
-
