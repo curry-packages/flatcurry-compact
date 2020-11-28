@@ -10,7 +10,7 @@
         "flatcurry": ">= 0.0.1"
     },
     "compilerCompatibility": {
-        "pakcs": ">= 1.14.0"
+        "pakcs": ">= 1.14.0, < 3.0.0"
     },
      "executable": {
         "name": "curry-compactflat",
