@@ -4,31 +4,43 @@
 --- no imports but all imported and potentially called functions.
 ---
 --- @author Michael Hanus
---- @version June 2009
+--- @version September 2021
 ------------------------------------------------------------------------------
 
-import List(intersperse)
-import System
+import Data.List          ( intersperse )
+import System.Environment ( getArgs )
+
 import FlatCurry.Types
 import FlatCurry.Files
 import FlatCurry.Compact
+import System.CurryPath   ( runModuleAction )
+import System.Process     ( system )
 
 -- Check arguments and call main function:
+main :: IO ()
 main = do
   args <- getArgs
   case args of
-    [prog]              -> compactProgAndReplace [] prog
-    ["-export",prog]    -> compactProgAndReplace [Exports] prog
-    ["-main",func,prog] -> compactProgAndReplace [Main func] prog
-    _ -> putStrLn $ "ERROR: Illegal arguments: " ++
-           concat (intersperse " " args) ++ "\n" ++
-           "Usage: curry-compactflat [-export | -main func] <module_name>"
+    ["-h"]                -> putStrLn usage
+    ["--help"]            -> putStrLn usage
+    ["--export",mname]    -> compactProgAndReplace [Exports] mname
+    ["--main",func,mname] -> compactProgAndReplace [Main func] mname
+    [mname]               -> compactProgAndReplace [] mname
+    _                     -> putStrLn $ useError args
+ where
+  useError args = "ERROR: Illegal arguments: " ++ unwords args ++ "\n" ++ usage
+
+  usage = "Usage: curry-compactflat [--export | --main func] <module_name>"
 
 -- replace a FlatCurry program by a compactified version:
-compactProgAndReplace options prog = do
-  generateCompactFlatCurryFile (Required defaultRequired : options)
-                               prog (prog++"_comp.fcy")
-  let progfcy = flatCurryFileName prog
-  system $ "mv "++prog++"_comp.fcy "++progfcy
-  putStr $ "curry-compactflat: compacted program '"++progfcy++"' written.\n"
+compactProgAndReplace :: [Option] -> String -> IO ()
+compactProgAndReplace options = runModuleAction compact
+ where
+  compact mname = do
+    generateCompactFlatCurryFile (Required defaultRequired : options)
+                                 mname (mname ++ "_comp.fcy")
+    let fcyname = flatCurryFileName mname
+    system $ "mv " ++ mname ++ "_comp.fcy " ++ fcyname
+    putStrLn $
+      "curry-compactflat: compacted program '" ++ fcyname ++ "' written."
 

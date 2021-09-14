@@ -1,18 +1,18 @@
 {
     "name": "flatcurry-compact",
-    "version": "0.0.1",
+    "version": "3.0.0",
     "author": "Michael Hanus <mh@informatik.uni-kiel.de>",
     "synopsis": "A tool to reduce the size of FlatCurry programs",
     "category": [ "Optimization" ],
     "license": "BSD-3-Clause",
     "licenseFile": "LICENSE",
     "dependencies": {
-        "flatcurry": ">= 0.0.1"
+        "base"     : ">= 3.0.0, < 4.0.0",
+        "currypath": ">= 3.0.0, < 4.0.0",
+        "flatcurry": ">= 3.0.0, < 4.0.0",
+        "process"  : ">= 3.0.0, < 4.0.0"
     },
-    "compilerCompatibility": {
-        "pakcs": ">= 1.14.0, < 3.0.0"
-    },
-     "executable": {
+    "executable": {
         "name": "curry-compactflat",
         "main": "Main"
     },
