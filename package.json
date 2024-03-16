@@ -17,7 +17,7 @@
         "main": "Main"
     },
     "source": {
-        "git": "https://git.ps.informatik.uni-kiel.de/curry-packages/flatcurry-compact.git",
+        "git": "https://github.com/curry-packages/flatcurry-compact.git",
         "tag": "$version"
     }
 }
